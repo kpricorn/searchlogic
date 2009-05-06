@@ -7,7 +7,7 @@ module Searchlogic
     class Base
       include Shared::Utilities
       
-      attr_accessor :column, :column_for_type_cast, :column_sql, :column_sql_format, :explicit_any, :klass, :object_name, :table_name
+      attr_accessor :column, :column_for_type_cast, :column_sql, :column_sql_format, :explicit_any, :explicit_not, :klass, :object_name, :table_name
       class_inheritable_accessor :handle_array_value, :ignore_meaningless_value, :join_arrays_with_or, :value_type
       self.ignore_meaningless_value = true
     
@@ -63,6 +63,10 @@ module Searchlogic
       
       def explicit_any? # :nodoc:
         explicit_any == true
+      end
+      
+      def explicit_not? # :nodoc:
+        explicit_not == true
       end
       
       # Substitutes string vars with table and column name. Allows us to switch the column and table on the fly and have the condition update appropriately.

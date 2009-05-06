@@ -52,6 +52,13 @@ module Searchlogic
           
           new_joins.compact.uniq
         end
+        
+        def invert_conditions(conditions, group)
+          if !conditions.nil? and group.explicit_not?
+            conditions[0]="NOT #{conditions[0]}"
+          end
+          conditions
+        end
     end
   end
 end

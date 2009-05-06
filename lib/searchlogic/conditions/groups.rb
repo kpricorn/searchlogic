@@ -61,6 +61,25 @@ module Searchlogic
         ["true", "1", "yes"].include? explicit_any.to_s
       end
       
+      def not_group(*args, &block)
+        obj = group(*args, &block)
+        obj.explicit_not = true
+        obj
+      end
+      
+      alias_method :not_group=, :not_group
+      def explicit_not=(value) # :nodoc:
+        @explicit_not = value
+      end
+      
+      def explicit_not # :nodoc
+        @explicit_not
+      end
+      
+      def explicit_not? # :nodoc:
+        ["true", "1", "yes"].include? explicit_not.to_s
+      end
+      
       private
         def group_objects
           objects.select { |object| group?(object) }

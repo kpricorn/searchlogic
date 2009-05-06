@@ -140,6 +140,7 @@ module Searchlogic
         joined_conditions = nil
         objects.each do |object|
           sanitized_conditions = group?(object) ? scope_condition(object.sanitize) : object.sanitize
+          sanitized_conditions = invert_conditions(sanitized_conditions, object)
           joined_conditions = merge_conditions(joined_conditions, sanitized_conditions, :any => join_object_with_any?(object))
         end
         joined_conditions

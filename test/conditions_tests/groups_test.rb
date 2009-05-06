@@ -64,5 +64,19 @@ module ConditionsTests
       assert_equal [:users, {:users => :orders}], search.conditions.auto_joins
       assert_nothing_raised { search.all }
     end
+    
+    def test_not_group
+      conditions = Searchlogic::Cache::AccountConditions.new
+      conditions.id_gt = 3
+      group1 = conditions.group
+      group1.name_like = "Binary"
+      group2 = conditions.not_group
+      group2.id_gt = 5
+      group21 = group2.group
+      group21.id_lt = 20
+      now = Time.now
+      group21.created_at_after = now
+      assert_equal ["\"accounts\".\"id\" > ? AND (\"accounts\".\"name\" LIKE ?) AND NOT (\"accounts\".\"id\" > ? AND (\"accounts\".\"id\" < ? AND \"accounts\".\"created_at\" > ?))", 3, "%Binary%", 5, 20, now], conditions.sanitize
+    end
   end
 end
