@@ -260,6 +260,18 @@ Group with a hash:
   ])
   # => id > 2 AND (first_name like '%Ben%') AND (last_name like '%Johnson%' AND (email like '%binarylogic.com'))
 
+SQL NOT operator on group level with not_group:
+
+  search = User.new_search
+  search.id_gt = 2
+  group1 = search.conditions.group
+  group1.first_name_like = "Ben"
+  group2 = search.conditions.not_group
+  group2.last_name_like = "Johnson"
+  group21 = group2.group
+  group21.email_ends_with = "binarylogic.com"
+  # => id > 2 AND (first_name like '%Ben%') AND NOT (last_name like '%Johnson%' AND (email like '%binarylogic.com'))
+
 I want to end this by saying Searchlogic was never meant to replace SQL, name_scopes, etc. If you need to perform complex searching there is nothing wrong with resorting to a named scope or using the traditional search methods. In fact, search logic plays nice with named_scopes anyways, so you can combine the 2 if needed:
 
   @search = User.my_awesome_scope.another_cool_scope.new_search
